@@ -17,13 +17,14 @@ import {
 import { useState } from "react";
 import { Column, Status, TaskData } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import TaskCell from "@/components/ui/task-cell";
 
 //creating our columns
 const columns: Column<TaskData>[] = [
   {
     accessorKey: "task", // the accessorKey is the key in our data that we want to display
     header: "Task", // this is what is displayed in the table header it can be a string or a component
-    cell: (props) => props?.getValue()?.toString(), // this is what is displayed in the table body it can be a string or a component
+    cell: (props) => <TaskCell<TaskData> {...props} />,
   },
   {
     accessorKey: "status",
@@ -55,6 +56,22 @@ export default function Home() {
     columns,
     getCoreRowModel: getCoreRowModel(),
     columnResizeMode: "onChange", // allows resize
+    meta: {
+      //update the table data
+      updateData: (rowIndex: number, columnId: string, value: string) => {
+        setData((old) => {
+          return old.map((row, index) => {
+            if (index === rowIndex) {
+              return {
+                ...row,
+                [columnId]: value,
+              };
+            }
+            return row;
+          });
+        });
+      },
+    },
   });
   return (
     <div className="p-5 overflow-x-auto">
