@@ -1,6 +1,8 @@
+export type Status = { id: number; name: string; color: string } | null;
+
 export interface TaskData {
   task: string;
-  status: string | null;
+  status: Status;
   due: Date | null;
   notes: string;
 }

@@ -9,32 +9,35 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import DATA from "@/lib/data";
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { useState } from "react";
-import { RowData } from "@tanstack/react-table";
-import { Column, TaskData } from "@/lib/types";
+import { Column, Status, TaskData } from "@/lib/types";
 
 //creating our columns
 const columns: Column<TaskData>[] = [
   {
     accessorKey: "task", // the accessorKey is the key in our data that we want to display
     header: "Task", // this is what is displayed in the table header it can be a string or a component
-    cell: (props) => <p>{props?.getValue()?.toString()}</p>, // this is what is displayed in the table body it can be a string or a component
+    cell: (props) => props?.getValue()?.toString(), // this is what is displayed in the table body it can be a string or a component
   },
   {
     accessorKey: "status",
     header: "Status",
-    cell: (props) => <p>{props?.getValue()?.toString()}</p>,
+    cell: (props) => (props?.getValue() as Status)?.name,
   },
   {
     accessorKey: "due",
     header: "Due",
-    cell: (props) => <p>{props?.getValue()?.toString()}</p>,
+    cell: (props) => (props?.getValue() as Date)?.toDateString() ?? "NA",
   },
   {
     accessorKey: "notes",
     header: "Notes",
-    cell: (props) => <p>{props?.getValue()?.toString()}</p>,
+    cell: (props) => props?.getValue()?.toString() ?? "NA",
   },
 ];
 
@@ -51,23 +54,29 @@ export default function Home() {
   return (
     <div className="p-5">
       <p className="my-3">Tanstack Table Example</p>
-      <Table>
+      <Table width={table.getTotalSize()}>
         <TableCaption>example table with tanstack table</TableCaption>
         <TableHeader className="text-xl font-bold">
-          <TableRow>
-            <TableHead>Task</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Due</TableHead>
-            <TableHead>Notes</TableHead>
-          </TableRow>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <TableHead key={header.id}>
+                  {header.column.columnDef.header as string}
+                </TableHead>
+              ))}
+            </TableRow>
+          ))}
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell>1</TableCell>
-            <TableCell>2</TableCell>
-            <TableCell>3</TableCell>
-            <TableCell>4</TableCell>
-          </TableRow>
+          {table.getCoreRowModel().rows.map((row) => (
+            <TableRow key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <TableCell key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>
