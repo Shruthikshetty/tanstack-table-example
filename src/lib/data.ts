@@ -1,3 +1,5 @@
+import { TData } from "./types";
+
 const STATUS_ON_DECK = { id: 1, name: "On Deck", color: "blue.300" };
 const STATUS_IN_PROGRESS = {
   id: 2,
@@ -13,7 +15,7 @@ export const STATUSES = [
   STATUS_DEPLOYED,
 ];
 
-const DATA = [
+const DATA: TData[] = [
   {
     task: "Add a New Feature",
     status: STATUS_ON_DECK,

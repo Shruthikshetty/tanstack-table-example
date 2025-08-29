@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import { Input } from "./input";
-import { CellProps } from "@/lib/types";
+import { CellContext } from "@tanstack/react-table";
+import { TableMeta } from "@/lib/types";
 
-const TaskCell = <T extends object>({ getValue , row , column , table }: CellProps<T>) => {
+const TaskCell = <T extends object>({
+  getValue,
+  row,
+  column,
+  table,
+}: CellContext<T, unknown>) => {
   const [value, setValue] = useState(getValue() as string);
 
   return (
@@ -11,7 +17,11 @@ const TaskCell = <T extends object>({ getValue , row , column , table }: CellPro
       onChange={(e) => setValue(e.target.value)}
       className="border-0 shadow-none"
       onBlur={() => {
-        table.options.meta?.updateData(row.index, column.id, value);
+        (table.options.meta as TableMeta)?.updateData(
+          row.index,
+          column.id,
+          value
+        );
       }}
     />
   );

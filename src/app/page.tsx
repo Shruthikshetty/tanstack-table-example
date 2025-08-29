@@ -10,21 +10,22 @@ import {
 } from "@/components/ui/table";
 import DATA from "@/lib/data";
 import {
+  ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
-import { Column, Status, TaskData } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import TaskCell from "@/components/ui/task-cell";
+import { Status, TData } from "@/lib/types";
 
 //creating our columns
-const columns: Column<TaskData>[] = [
+const columns: ColumnDef<TData, string | Status | Date | null>[] = [
   {
     accessorKey: "task", // the accessorKey is the key in our data that we want to display
     header: "Task", // this is what is displayed in the table header it can be a string or a component
-    cell: (props) => <TaskCell<TaskData> {...props} />,
+    cell: (props) => <TaskCell<TData> {...props} />,
   },
   {
     accessorKey: "status",
@@ -48,10 +49,10 @@ const columns: Column<TaskData>[] = [
 
 export default function Home() {
   //get our example data
-  const [data, setData] = useState(DATA);
+  const [data, setData] = useState<TData[]>(DATA);
   //hook to create a table  this comes from react tanstack tables
   // this lib only provides helpers they do not come with any styling
-  const table = useReactTable({
+  const table = useReactTable<TData>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
@@ -73,6 +74,7 @@ export default function Home() {
       },
     },
   });
+
   return (
     <div className="p-5 overflow-x-auto">
       <p className="my-3">Tanstack Table Example</p>
