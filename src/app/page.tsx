@@ -17,7 +17,6 @@ import {
 import { useState } from "react";
 import { Column, Status, TaskData } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 //creating our columns
 const columns: Column<TaskData>[] = [
@@ -95,7 +94,7 @@ export default function Home() {
                 <TableCell
                   style={{ width: `${cell.column.getSize()}px` }}
                   key={cell.id}
-                  className={`border border-gray-400`}
+                  className={`border border-gray-400 whitespace-normal`}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
