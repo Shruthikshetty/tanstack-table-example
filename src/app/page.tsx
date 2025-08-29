@@ -27,7 +27,7 @@ const columns: Column<TaskData>[] = [
   {
     accessorKey: "status",
     header: "Status",
-    cell: (props) => (props?.getValue() as Status)?.name,
+    cell: (props) => (props?.getValue() as Status)?.name ?? "NA",
   },
   {
     accessorKey: "due",
@@ -37,7 +37,10 @@ const columns: Column<TaskData>[] = [
   {
     accessorKey: "notes",
     header: "Notes",
-    cell: (props) => props?.getValue()?.toString() ?? "NA",
+    cell: (props) =>
+      Boolean(props?.getValue()?.toString())
+        ? props?.getValue()?.toString()
+        : "NA",
   },
 ];
 
@@ -54,13 +57,19 @@ export default function Home() {
   return (
     <div className="p-5">
       <p className="my-3">Tanstack Table Example</p>
-      <Table width={table.getTotalSize()}>
+      <Table
+        width={table.getTotalSize()}
+        className="border border-collapse w-full"
+      >
         <TableCaption>example table with tanstack table</TableCaption>
         <TableHeader className="text-xl font-bold">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
+                <TableHead
+                  key={header.id}
+                  className={`w-[${header.getSize()}] border border-gray-400`}
+                >
                   {header.column.columnDef.header as string}
                 </TableHead>
               ))}
@@ -71,7 +80,10 @@ export default function Home() {
           {table.getCoreRowModel().rows.map((row) => (
             <TableRow key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
+                <TableCell
+                  key={cell.id}
+                  className={`w-[${cell.column.getSize()}] border border-gray-400`}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}
