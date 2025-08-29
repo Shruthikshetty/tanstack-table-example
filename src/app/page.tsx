@@ -16,6 +16,8 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 import { Column, Status, TaskData } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 //creating our columns
 const columns: Column<TaskData>[] = [
@@ -53,24 +55,34 @@ export default function Home() {
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    columnResizeMode: "onChange", // allows resize
   });
   return (
-    <div className="p-5">
+    <div className="p-5 overflow-x-auto">
       <p className="my-3">Tanstack Table Example</p>
-      <Table
-        width={table.getTotalSize()}
-        className="border border-collapse w-full"
-      >
+      <Table className={`border border-collapse min-w-full table-fixed`}>
         <TableCaption>example table with tanstack table</TableCaption>
         <TableHeader className="text-xl font-bold">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <TableHead
+                  style={{ width: `${header.getSize()}px` }}
                   key={header.id}
-                  className={`w-[${header.getSize()}] border border-gray-400`}
+                  className={`border border-gray-400 relative`}
                 >
                   {header.column.columnDef.header as string}
+                  {header.column.getCanResize() && (
+                    <div
+                      className={cn(
+                        "hover:border-r-blue-600 hover:border-r-4 border-2 absolute z-10 right-0 h-full top-0 cursor-col-resize",
+                        header.column.getIsResizing() && "border-green-600"
+                      )}
+                      onMouseDown={header.getResizeHandler()}
+                      onTouchStart={header.getResizeHandler()}
+                      style={{ userSelect: "none" }}
+                    />
+                  )}
                 </TableHead>
               ))}
             </TableRow>
@@ -81,8 +93,9 @@ export default function Home() {
             <TableRow key={row.id}>
               {row.getVisibleCells().map((cell) => (
                 <TableCell
+                  style={{ width: `${cell.column.getSize()}px` }}
                   key={cell.id}
-                  className={`w-[${cell.column.getSize()}] border border-gray-400`}
+                  className={`border border-gray-400`}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
