@@ -17,8 +17,9 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import TaskCell from "@/components/ui/task-cell";
+import TaskCell from "@/components/task-cell";
 import { Status, TData } from "@/lib/types";
+import StatusDropDown from "@/components/status-dropdown";
 
 //creating our columns
 const columns: ColumnDef<TData, string | Status | Date | null>[] = [
@@ -30,7 +31,7 @@ const columns: ColumnDef<TData, string | Status | Date | null>[] = [
   {
     accessorKey: "status",
     header: "Status",
-    cell: (props) => (props?.getValue() as Status)?.name ?? "NA",
+    cell: (props) => <StatusDropDown {...props} />,
   },
   {
     accessorKey: "due",
@@ -113,7 +114,11 @@ export default function Home() {
                 <TableCell
                   style={{ width: `${cell.column.getSize()}px` }}
                   key={cell.id}
-                  className={`border border-gray-400 whitespace-normal`}
+                  className={cn(
+                    `border border-gray-400 whitespace-normal`,
+                    cell.column.columnDef.header === "Status" &&
+                      "pt-0 pl-0 pb-0 pr-0 "
+                  )}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>

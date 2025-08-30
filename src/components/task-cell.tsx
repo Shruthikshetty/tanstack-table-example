@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input } from "./input";
+import { Input } from "./ui/input";
 import { CellContext } from "@tanstack/react-table";
 import { TableMeta } from "@/lib/types";
 
