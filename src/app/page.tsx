@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import TaskCell from "@/components/task-cell";
 import { Status, TData } from "@/lib/types";
 import StatusDropDown from "@/components/status-dropdown";
+import DateCell from "@/components/date-cell";
 
 //creating our columns
 const columns: ColumnDef<TData, string | Status | Date | null>[] = [
@@ -36,7 +37,7 @@ const columns: ColumnDef<TData, string | Status | Date | null>[] = [
   {
     accessorKey: "due",
     header: "Due",
-    cell: (props) => (props?.getValue() as Date)?.toDateString() ?? "NA",
+    cell: (props) => <DateCell {...props} />,
   },
   {
     accessorKey: "notes",
