@@ -3,7 +3,7 @@ import { Input } from "./ui/input";
 import { CellContext } from "@tanstack/react-table";
 import { TableMeta } from "@/lib/types";
 
-const TaskCell = <T extends object>({
+const EditableCell = <T extends object>({
   getValue,
   row,
   column,
@@ -27,4 +27,4 @@ const TaskCell = <T extends object>({
   );
 };
 
-export default TaskCell;
+export default EditableCell;

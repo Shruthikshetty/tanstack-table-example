@@ -17,7 +17,7 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import TaskCell from "@/components/task-cell";
+import EditableCell from "@/components/editable-cell";
 import { Status, TData } from "@/lib/types";
 import StatusDropDown from "@/components/status-dropdown";
 import DateCell from "@/components/date-cell";
@@ -27,7 +27,7 @@ const columns: ColumnDef<TData, string | Status | Date | null>[] = [
   {
     accessorKey: "task", // the accessorKey is the key in our data that we want to display
     header: "Task", // this is what is displayed in the table header it can be a string or a component
-    cell: (props) => <TaskCell<TData> {...props} />,
+    cell: (props) => <EditableCell<TData> {...props} />,
   },
   {
     accessorKey: "status",
@@ -42,10 +42,7 @@ const columns: ColumnDef<TData, string | Status | Date | null>[] = [
   {
     accessorKey: "notes",
     header: "Notes",
-    cell: (props) =>
-      Boolean(props?.getValue()?.toString())
-        ? props?.getValue()?.toString()
-        : "NA",
+    cell: (props) => <EditableCell<TData> {...props} />,
   },
 ];
 

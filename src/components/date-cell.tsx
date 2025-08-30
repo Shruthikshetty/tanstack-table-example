@@ -15,9 +15,9 @@ const DateCell = <T extends object>({
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
-      <PopoverTrigger className="w-full h-full">
+      <PopoverTrigger className="w-full h-full flex flex-row items-center justify-left gap-5">
         <Calendar1Icon />
-        {(getValue() as Date)?.toDateString() ?? "NA"}
+        <p>{(getValue() as Date)?.toDateString() ?? "NA"}</p>
       </PopoverTrigger>
       <PopoverContent>
         <Calendar
