@@ -11,8 +11,10 @@ import {
 import DATA from "@/lib/data";
 import {
   ColumnDef,
+  ColumnFilter,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
@@ -21,6 +23,7 @@ import EditableCell from "@/components/editable-cell";
 import { Status, TData } from "@/lib/types";
 import StatusDropDown from "@/components/status-dropdown";
 import DateCell from "@/components/date-cell";
+import FilterInput from "@/components/filter";
 
 //creating our columns
 const columns: ColumnDef<TData, string | Status | Date | null>[] = [
@@ -49,12 +52,23 @@ const columns: ColumnDef<TData, string | Status | Date | null>[] = [
 export default function Home() {
   //get our example data
   const [data, setData] = useState<TData[]>(DATA);
+  //filter for column
+  const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([
+    {
+      id: "task", // we want to filter by task
+      value: "",
+    },
+  ]);
   //hook to create a table  this comes from react tanstack tables
   // this lib only provides helpers they do not come with any styling
   const table = useReactTable<TData>({
     data,
     columns,
+    state: {
+      columnFilters,
+    },
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     columnResizeMode: "onChange", // allows resize
     meta: {
       //update the table data
@@ -77,6 +91,10 @@ export default function Home() {
   return (
     <div className="p-5 overflow-x-auto">
       <p className="my-3">Tanstack Table Example</p>
+      <FilterInput
+        columnFilters={columnFilters}
+        setColumnFilters={setColumnFilters}
+      />
       <Table className={`border border-collapse min-w-full table-fixed`}>
         <TableCaption>example table with tanstack table</TableCaption>
         <TableHeader className="text-xl font-bold">
@@ -106,7 +124,7 @@ export default function Home() {
           ))}
         </TableHeader>
         <TableBody>
-          {table.getCoreRowModel().rows.map((row) => (
+          {table.getFilteredRowModel().rows.map((row) => (
             <TableRow key={row.id}>
               {row.getVisibleCells().map((cell) => (
                 <TableCell
