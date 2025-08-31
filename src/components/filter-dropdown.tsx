@@ -9,7 +9,6 @@ import {
 import { Filter } from "lucide-react";
 import { STATUSES } from "@/lib/data";
 import { ColumnFilter } from "@tanstack/react-table";
-import { cn } from "@/lib/utils";
 
 const FilterDropdown = ({
   columnFilters,
@@ -18,7 +17,6 @@ const FilterDropdown = ({
   columnFilters: ColumnFilter[];
   setColumnFilters: React.Dispatch<React.SetStateAction<ColumnFilter[]>>;
 }) => {
-  console.log(columnFilters);
   const filterStatus =
     (columnFilters.find((filter) => filter.id === "status")
       ?.value as number[]) || [];
