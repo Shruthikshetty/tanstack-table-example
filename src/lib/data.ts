@@ -58,6 +58,42 @@ const DATA: TData[] = [
     due: null,
     notes: "Upgrade React & Chakra UI",
   },
+  {
+    task: "Add Unit Tests to API",
+    status: null,
+    due: new Date("2023/10/15"),
+    notes: "Add Jest Unit Tests to all API endpoints",
+  },
+  {
+    task: "Add UI Storybook",
+    status: STATUS_TESTING,
+    due: null,
+    notes: "Use Storybook",
+  },
+  {
+    task: "Add Cypress E2E tests",
+    status: null,
+    due: new Date("2023/11/15"),
+    notes: "Test all pages",
+  },
+  {
+    task: "Add Documentation to Frontend",
+    status: null,
+    due: new Date("2023/12/15"),
+    notes: "Add JS Docs to all frontend files",
+  },
+  {
+    task: "Refactor Frontend Code",
+    status: null,
+    due: null,
+    notes: "Use new React features",
+  },
+  {
+    task: "Add GitHub Actions CI/CD",
+    status: null,
+    due: new Date("2023/12/20"),
+    notes: "Use GitHub Actions",
+  },
 ];
 
 export default DATA;

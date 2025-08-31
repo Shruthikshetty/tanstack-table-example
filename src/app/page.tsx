@@ -7,6 +7,7 @@ import {
   TableHead,
   TableCaption,
   TableCell,
+  TableFooter,
 } from "@/components/ui/table";
 import DATA from "@/lib/data";
 import {
@@ -15,6 +16,7 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
@@ -86,6 +88,7 @@ export default function Home() {
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     columnResizeMode: "onChange", // allows resize
@@ -184,6 +187,29 @@ export default function Home() {
             </TableRow>
           ))}
         </TableBody>
+
+        {table.getPageCount() > 1 && (
+          <TableFooter>
+            <TableRow>
+              <TableHead>
+                <button
+                  onClick={() => table.previousPage()}
+                  disabled={!table.getCanPreviousPage()}
+                >
+                  Previous
+                </button>
+              </TableHead>
+              <TableHead>
+                <button
+                  onClick={() => table.nextPage()}
+                  disabled={!table.getCanNextPage()}
+                >
+                  Next
+                </button>
+              </TableHead>
+            </TableRow>
+          </TableFooter>
+        )}
       </Table>
     </div>
   );
