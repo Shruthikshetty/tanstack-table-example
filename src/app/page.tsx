@@ -30,6 +30,14 @@ import DateCell from "@/components/date-cell";
 import FilterInput from "@/components/filter-bar";
 import FilterDropdown from "@/components/filter-dropdown";
 import { ArrowUpDown, MoveDown, MoveUp } from "lucide-react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 //creating our columns
 const columns: ColumnDef<TData, string | Status | Date | null>[] = [
@@ -124,7 +132,6 @@ export default function Home() {
         />
       </div>
       <Table className={`border border-collapse min-w-full table-fixed`}>
-        <TableCaption>example table with tanstack table</TableCaption>
         <TableHeader className="text-xl font-bold">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -187,30 +194,37 @@ export default function Home() {
             </TableRow>
           ))}
         </TableBody>
-
-        {table.getPageCount() > 1 && (
-          <TableFooter>
-            <TableRow>
-              <TableHead>
-                <button
-                  onClick={() => table.previousPage()}
-                  disabled={!table.getCanPreviousPage()}
-                >
-                  Previous
-                </button>
-              </TableHead>
-              <TableHead>
-                <button
-                  onClick={() => table.nextPage()}
-                  disabled={!table.getCanNextPage()}
-                >
-                  Next
-                </button>
-              </TableHead>
-            </TableRow>
-          </TableFooter>
-        )}
       </Table>
+      {table.getPageCount() > 1 && (
+        <Pagination className="mt-4">
+          <PaginationContent>
+            <PaginationPrevious onClick={() => table.previousPage()}>
+              Previous
+            </PaginationPrevious>
+
+            {Array.from({ length: table.getPageCount() }).map((_, i) => (
+              <PaginationItem key={i}>
+                <PaginationLink
+                  aria-label={`Go to page ${i + 1}`}
+                  className={cn(
+                    "px-2.5 py-1.5 ring-offset-background",
+                    table.getState().pagination.pageIndex === i
+                      ? "bg-primary text-primary-foreground"
+                      : "hover:bg-muted/50"
+                  )}
+                  onClick={() => table.setPageIndex(i)}
+                >
+                  {i + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+
+            <PaginationNext onClick={() => table.nextPage()}>
+              Next
+            </PaginationNext>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 }
