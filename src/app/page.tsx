@@ -5,9 +5,7 @@ import {
   TableRow,
   Table,
   TableHead,
-  TableCaption,
   TableCell,
-  TableFooter,
 } from "@/components/ui/table";
 import DATA from "@/lib/data";
 import {
