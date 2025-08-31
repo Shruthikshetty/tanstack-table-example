@@ -23,7 +23,8 @@ import EditableCell from "@/components/editable-cell";
 import { Status, TData } from "@/lib/types";
 import StatusDropDown from "@/components/status-dropdown";
 import DateCell from "@/components/date-cell";
-import FilterInput from "@/components/filter";
+import FilterInput from "@/components/filter-bar";
+import FilterDropdown from "@/components/filter-dropdown";
 
 //creating our columns
 const columns: ColumnDef<TData, string | Status | Date | null>[] = [
@@ -31,11 +32,19 @@ const columns: ColumnDef<TData, string | Status | Date | null>[] = [
     accessorKey: "task", // the accessorKey is the key in our data that we want to display
     header: "Task", // this is what is displayed in the table header it can be a string or a component
     cell: (props) => <EditableCell<TData> {...props} />,
+    enableColumnFilter: true,
+    filterFn: "includesString",
   },
   {
     accessorKey: "status",
     header: "Status",
     cell: (props) => <StatusDropDown {...props} />,
+    enableColumnFilter: true,
+    filterFn: (row, columnId, filterStatus) => {
+      if (filterStatus.length === 0) return true;
+      const status: Status = row.getValue(columnId);
+      return filterStatus.includes(status?.id);
+    },
   },
   {
     accessorKey: "due",
@@ -91,10 +100,16 @@ export default function Home() {
   return (
     <div className="p-5 overflow-x-auto">
       <p className="my-3">Tanstack Table Example</p>
-      <FilterInput
-        columnFilters={columnFilters}
-        setColumnFilters={setColumnFilters}
-      />
+      <div className="flex flex-row gap-5 justify-start items-center">
+        <FilterInput
+          columnFilters={columnFilters}
+          setColumnFilters={setColumnFilters}
+        />
+        <FilterDropdown
+          columnFilters={columnFilters}
+          setColumnFilters={setColumnFilters}
+        />
+      </div>
       <Table className={`border border-collapse min-w-full table-fixed`}>
         <TableCaption>example table with tanstack table</TableCaption>
         <TableHeader className="text-xl font-bold">
